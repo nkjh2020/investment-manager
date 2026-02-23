@@ -72,6 +72,9 @@ export default function RegisterPage() {
 
       if (data.success) {
         router.push('/dashboard');
+      } else if (res.status === 500) {
+        // 서버 내부 오류 (환경변수 누락, Redis 연결 실패 등)
+        setError('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요. (관리자에게 문의)');
       } else {
         setError(data.error?.message ?? '가입에 실패했습니다');
       }

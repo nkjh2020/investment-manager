@@ -38,8 +38,14 @@ export async function isInviteValid(
   code: string,
 ): Promise<{ valid: boolean; reason?: string }> {
   // 관리자 초대 코드는 환경변수에서 직접 확인 (재사용 가능)
-  if (code === process.env.ADMIN_INVITE_CODE) {
+  // trim(): Vercel Dashboard 입력 시 앞뒤 공백이 포함될 수 있어 방어 처리
+  if (code.trim() === process.env.ADMIN_INVITE_CODE?.trim()) {
     return { valid: true };
+  }
+
+  // ADMIN_INVITE_CODE가 설정되지 않은 경우 명시적 에러
+  if (!process.env.ADMIN_INVITE_CODE) {
+    console.error('[invite-store] ADMIN_INVITE_CODE 환경변수가 설정되지 않았습니다');
   }
 
   const invite = await getInvite(code);

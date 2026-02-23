@@ -33,8 +33,16 @@ export async function POST(request: NextRequest) {
     // 초대 코드 검증
     const { valid, reason } = await isInviteValid(inviteCode);
     if (!valid) {
+      // 디버깅용 로그 (Vercel Functions 탭에서 확인 가능)
+      console.error('[register] invite check failed:', {
+        provided: JSON.stringify(inviteCode),
+        adminCodeSet: !!process.env.ADMIN_INVITE_CODE,
+        adminCodeLength: process.env.ADMIN_INVITE_CODE?.length,
+        trimMatch: inviteCode.trim() === process.env.ADMIN_INVITE_CODE?.trim(),
+        reason,
+      });
       return NextResponse.json(
-        { success: false, error: { code: 'INVALID_INVITE', message: reason } },
+        { success: false, error: { code: 'INVALID_INVITE', message: reason ?? '유효하지 않은 초대 코드입니다' } },
         { status: 400 },
       );
     }
@@ -48,8 +56,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 관리자 여부 결정
-    const isAdmin = inviteCode === process.env.ADMIN_INVITE_CODE;
+    // 관리자 여부 결정 (trim() 일치 기준)
+    const isAdmin = inviteCode.trim() === process.env.ADMIN_INVITE_CODE?.trim();
 
     // 비밀번호 해시
     const passwordHash = await bcrypt.hash(password, 12);
