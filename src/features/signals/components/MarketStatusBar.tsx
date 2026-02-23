@@ -9,7 +9,7 @@ interface MarketStatusBarProps {
 // ── 상태별 색상 ───────────────────────────────────────────
 const STATUS_STYLES = {
   BULL:    { badge: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',    label: '🐂 BULL' },
-  NEUTRAL: { badge: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',   label: '➡ NEUTRAL' },
+  NEUTRAL: { badge: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-100',   label: '➡ NEUTRAL' },
   RISK:    { badge: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',        label: '⚠ RISK' },
 } as const;
 
@@ -26,14 +26,14 @@ function IndexChip({
   const isPositive = changePct != null && changePct >= 0;
   const changeColor =
     changePct == null
-      ? 'text-gray-600 dark:text-gray-300'
+      ? 'text-gray-600 dark:text-gray-100'
       : isPositive
         ? 'text-blue-600 dark:text-blue-400'
         : 'text-red-600 dark:text-red-400';
 
   return (
     <div className="flex flex-col items-center rounded-lg bg-gray-50 px-3 py-2 text-center dark:bg-gray-700/50">
-      <span className="text-xs font-medium text-gray-600 dark:text-gray-300">{label}</span>
+      <span className="text-xs font-medium text-gray-600 dark:text-gray-100">{label}</span>
       <span className="text-sm font-semibold text-gray-900 dark:text-white">
         {current.toLocaleString()}
       </span>
@@ -86,7 +86,7 @@ export default function MarketStatusBar({ marketStatus }: MarketStatusBarProps) 
       {/* 헤더 */}
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">시장 상황</h3>
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-100">시장 상황</h3>
           <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${styles.badge}`}>
             {styles.label}
           </span>
@@ -118,7 +118,7 @@ export default function MarketStatusBar({ marketStatus }: MarketStatusBarProps) 
         )}
         {indicators.vix && (
           <div className="flex flex-col items-center rounded-lg bg-gray-50 px-3 py-2 text-center dark:bg-gray-700/50">
-            <span className="text-xs font-medium text-gray-600 dark:text-gray-300">VIX</span>
+            <span className="text-xs font-medium text-gray-600 dark:text-gray-100">VIX</span>
             <span className={`text-sm font-semibold ${
               indicators.vix.current > 30
                 ? 'text-red-600 dark:text-red-400'
@@ -128,7 +128,7 @@ export default function MarketStatusBar({ marketStatus }: MarketStatusBarProps) 
             }`}>
               {indicators.vix.current.toFixed(1)}
             </span>
-            <span className="text-xs text-gray-600 dark:text-gray-300">공포지수</span>
+            <span className="text-xs text-gray-600 dark:text-gray-100">공포지수</span>
           </div>
         )}
       </div>

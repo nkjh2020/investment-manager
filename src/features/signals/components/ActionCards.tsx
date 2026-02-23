@@ -90,7 +90,7 @@ function SignalCard({
         <span className={`rounded-md px-1.5 py-0.5 text-[10px] font-bold ${styles.badge}`}>
           {styles.emoji} {styles.label}
         </span>
-        <span className="text-[10px] text-gray-600 dark:text-gray-300">
+        <span className="text-[10px] text-gray-600 dark:text-gray-100">
           {signal.currentWeight.toFixed(1)}%
         </span>
       </div>
@@ -100,12 +100,12 @@ function SignalCard({
         <p className="line-clamp-1 text-xs font-semibold text-gray-900 dark:text-white">
           {signal.stockName}
         </p>
-        <p className="text-[10px] text-gray-600 dark:text-gray-300">{signal.stockCode}</p>
+        <p className="text-[10px] text-gray-600 dark:text-gray-100">{signal.stockCode}</p>
       </div>
 
       {/* 총점 + 수익률 */}
       <div className="flex items-center justify-between">
-        <span className="text-[10px] text-gray-600 dark:text-gray-300">
+        <span className="text-[10px] text-gray-600 dark:text-gray-100">
           점수 {signal.score.total >= 0 ? '+' : ''}{signal.score.total}
         </span>
         <span className={`text-[10px] font-medium ${getProfitColor(signal.profitRate)}`}>
@@ -121,7 +121,7 @@ export default function ActionCards({ signals, onSelectSignal }: ActionCardsProp
   if (signals.length === 0) {
     return (
       <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 py-8 dark:border-gray-700 dark:bg-gray-800">
-        <p className="text-sm text-gray-600 dark:text-gray-300">보유 종목이 없습니다</p>
+        <p className="text-sm text-gray-600 dark:text-gray-100">보유 종목이 없습니다</p>
       </div>
     );
   }

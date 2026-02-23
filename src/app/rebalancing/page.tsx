@@ -109,11 +109,11 @@ export default function RebalancingPage() {
                   'w-48 truncate text-sm font-medium',
                   isCash
                     ? 'text-purple-600 dark:text-purple-400'
-                    : 'text-gray-700 dark:text-gray-300'
+                    : 'text-gray-900 dark:text-gray-100'
                 )}>
                   {holding?.stockName ?? target.stockCode}
                 </span>
-                <span className="w-20 text-right text-sm text-gray-700 dark:text-gray-300">
+                <span className="w-20 text-right text-sm text-gray-900 dark:text-gray-100">
                   현재 {holding?.weight.toFixed(1) ?? '0.0'}%
                 </span>
                 <input
@@ -125,13 +125,13 @@ export default function RebalancingPage() {
                   max="100"
                   step="0.1"
                 />
-                <span className="text-sm text-gray-700 dark:text-gray-300">%</span>
+                <span className="text-sm text-gray-900 dark:text-gray-100">%</span>
               </div>
             );
           })}
         </div>
         <div className="mt-4 flex items-center gap-2">
-          <span className="text-sm text-gray-700 dark:text-gray-300">합계:</span>
+          <span className="text-sm font-medium text-gray-900 dark:text-gray-100">합계:</span>
           <span
             className={clsx(
               'text-sm font-bold',

@@ -15,7 +15,7 @@ const ACTION_LABELS: Record<ActionType, { label: string; color: string }> = {
   STRONG_BUY: { label: '강력매수', color: 'text-blue-800 dark:text-blue-300' },
   BUY:        { label: '매수',    color: 'text-blue-600 dark:text-blue-400' },
   ADD:        { label: '추가매수', color: 'text-cyan-600 dark:text-cyan-400' },
-  HOLD:       { label: '보유',    color: 'text-gray-700 dark:text-gray-300' },
+  HOLD:       { label: '보유',    color: 'text-gray-700 dark:text-gray-100' },
   'N/A':      { label: 'N/A',    color: 'text-gray-600 dark:text-gray-400' },
 };
 
@@ -32,7 +32,7 @@ function MAPositionRow({
   if (ma == null || price == null) {
     return (
       <div className="flex items-center justify-between py-1.5 text-sm">
-        <span className="text-gray-600 dark:text-gray-300">{label}</span>
+        <span className="text-gray-600 dark:text-gray-100">{label}</span>
         <span className="text-gray-500 dark:text-gray-400">데이터 없음</span>
       </div>
     );
@@ -43,9 +43,9 @@ function MAPositionRow({
 
   return (
     <div className="flex items-center justify-between py-1.5 text-sm">
-      <span className="text-gray-700 dark:text-gray-300">{label}</span>
+      <span className="text-gray-700 dark:text-gray-100">{label}</span>
       <div className="flex items-center gap-2">
-        <span className="text-gray-700 dark:text-gray-300">{ma.toLocaleString()}</span>
+        <span className="text-gray-700 dark:text-gray-100">{ma.toLocaleString()}</span>
         <span className={`text-xs font-medium ${
           isAbove
             ? 'text-blue-600 dark:text-blue-400'
@@ -77,7 +77,7 @@ function ScoreBar({
 
   return (
     <div className="mb-2">
-      <div className="mb-1 flex justify-between text-xs text-gray-700 dark:text-gray-300">
+      <div className="mb-1 flex justify-between text-xs text-gray-700 dark:text-gray-100">
         <span>{label}</span>
         <span className="font-medium">{value >= 0 ? '+' : ''}{value}</span>
       </div>
@@ -123,7 +123,7 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
         <div className="mb-4 flex items-start justify-between">
           <div>
             <h2 className="text-base font-bold text-gray-900 dark:text-white">{stockName}</h2>
-            <p className="text-xs text-gray-600 dark:text-gray-300">{stockCode}</p>
+            <p className="text-xs text-gray-600 dark:text-gray-100">{stockCode}</p>
           </div>
           <div className="flex items-center gap-3">
             <span className={`text-lg font-bold ${actionInfo.color}`}>{actionInfo.label}</span>
@@ -139,13 +139,13 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
         {/* 현재 비중 / 수익률 */}
         <div className="mb-4 grid grid-cols-2 gap-3">
           <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-700/50">
-            <p className="text-xs text-gray-600 dark:text-gray-300">현재 비중</p>
+            <p className="text-xs text-gray-600 dark:text-gray-100">현재 비중</p>
             <p className="text-lg font-bold text-gray-900 dark:text-white">
               {currentWeight.toFixed(1)}%
             </p>
           </div>
           <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-700/50">
-            <p className="text-xs text-gray-600 dark:text-gray-300">수익률</p>
+            <p className="text-xs text-gray-600 dark:text-gray-100">수익률</p>
             <p className={`text-lg font-bold ${
               profitRate > 0
                 ? 'text-blue-600 dark:text-blue-400'
@@ -160,18 +160,18 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
 
         {/* 점수 시각화 */}
         <div className="mb-4 rounded-lg bg-gray-50 p-3 dark:bg-gray-700/30">
-          <p className="mb-2 text-xs font-semibold text-gray-700 dark:text-gray-300">점수 분석</p>
+          <p className="mb-2 text-xs font-semibold text-gray-700 dark:text-gray-100">점수 분석</p>
           <ScoreBar label="추세 (Trend)"    value={score.trend}    min={0}  max={4} />
           <ScoreBar label="모멘텀 (RSI)"     value={score.momentum} min={-2} max={2} />
           <ScoreBar label="거래량 (VO)"      value={score.volume}   min={-1} max={1} />
           <div className="mt-2 border-t border-gray-200 pt-2 dark:border-gray-600">
             <div className="flex items-center justify-between text-sm font-bold">
-              <span className="text-gray-700 dark:text-gray-300">총점</span>
+              <span className="text-gray-700 dark:text-gray-100">총점</span>
               <span className={
                 score.total >= 4
                   ? 'text-blue-600 dark:text-blue-400'
                   : score.total >= 2
-                    ? 'text-gray-700 dark:text-gray-300'
+                    ? 'text-gray-700 dark:text-gray-100'
                     : 'text-red-600 dark:text-red-400'
               }>
                 {score.total >= 0 ? '+' : ''}{score.total} / 7
@@ -182,7 +182,7 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
 
         {/* 이평선 위치 */}
         <div className="mb-4 rounded-lg bg-gray-50 p-3 dark:bg-gray-700/30">
-          <p className="mb-1 text-xs font-semibold text-gray-700 dark:text-gray-300">이동평균선</p>
+          <p className="mb-1 text-xs font-semibold text-gray-700 dark:text-gray-100">이동평균선</p>
           <div className="divide-y divide-gray-100 dark:divide-gray-700">
             <MAPositionRow label="MA 20"  price={ind.price} ma={ind.ma20} />
             <MAPositionRow label="MA 60"  price={ind.price} ma={ind.ma60} />
@@ -190,10 +190,10 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
             <MAPositionRow label="MA 200" price={ind.price} ma={ind.ma200} />
           </div>
           <div className="mt-2 flex justify-between border-t border-gray-100 pt-2 text-xs dark:border-gray-700">
-            <span className="text-gray-600 dark:text-gray-300">
+            <span className="text-gray-600 dark:text-gray-100">
               RSI: {ind.rsi != null ? ind.rsi.toFixed(1) : 'N/A'}
             </span>
-            <span className="text-gray-600 dark:text-gray-300">
+            <span className="text-gray-600 dark:text-gray-100">
               VO: {ind.vo != null ? ind.vo.toFixed(1) : 'N/A'}
             </span>
           </div>
@@ -202,7 +202,7 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
         {/* 판단 근거 / 실행 제안 */}
         <div className="space-y-2">
           <div className="rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-700/30">
-            <p className="text-[11px] text-gray-600 dark:text-gray-300">판단 근거</p>
+            <p className="text-[11px] text-gray-600 dark:text-gray-100">판단 근거</p>
             <p className="text-xs font-medium text-gray-800 dark:text-gray-200">{reason}</p>
           </div>
           <div className={`rounded-lg px-3 py-2 ${
@@ -212,7 +212,7 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
                 ? 'bg-blue-50 dark:bg-blue-900/20'
                 : 'bg-gray-50 dark:bg-gray-700/30'
           }`}>
-            <p className="text-[11px] text-gray-600 dark:text-gray-300">실행 제안</p>
+            <p className="text-[11px] text-gray-600 dark:text-gray-100">실행 제안</p>
             <p className="text-xs font-medium text-gray-800 dark:text-gray-200">{suggestion}</p>
           </div>
         </div>
