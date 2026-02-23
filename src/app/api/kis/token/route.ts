@@ -1,14 +1,30 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from '@/lib/token-manager';
-import { getAccountConfigs } from '@/lib/account-config';
+import { getUserById, decryptKisAccount } from '@/lib/user-store';
+import type { AccountConfig } from '@/types/account';
 
-export async function POST() {
+export async function POST(request: NextRequest) {
+  const userId = request.headers.get('x-user-id');
+  if (!userId) {
+    return NextResponse.json(
+      { success: false, error: { code: 'UNAUTHORIZED' } },
+      { status: 401 },
+    );
+  }
+
   try {
-    const accounts = getAccountConfigs();
+    const user = await getUserById(userId);
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: { code: 'USER_NOT_FOUND' } },
+        { status: 404 },
+      );
+    }
 
-    // 모든 계좌의 토큰을 발급 (같은 appKey는 공유됨)
+    const accounts: AccountConfig[] = user.kisAccounts.map(decryptKisAccount);
+
     const results = await Promise.allSettled(
-      accounts.map((account) => getToken(account))
+      accounts.map((account) => getToken(account)),
     );
 
     const tokens = results.map((result, index) => ({
@@ -17,7 +33,7 @@ export async function POST() {
       success: result.status === 'fulfilled',
       tokenType: result.status === 'fulfilled' ? result.value.tokenType : undefined,
       expiresIn: result.status === 'fulfilled' ? result.value.expiresIn : undefined,
-      error: result.status === 'rejected' ? result.reason?.message : undefined,
+      error: result.status === 'rejected' ? (result.reason as Error)?.message : undefined,
     }));
 
     return NextResponse.json({
@@ -28,14 +44,8 @@ export async function POST() {
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Token issuance failed';
     return NextResponse.json(
-      {
-        success: false,
-        error: {
-          code: 'KIS_TOKEN_ERROR',
-          message,
-        },
-      },
-      { status: 500 }
+      { success: false, error: { code: 'KIS_TOKEN_ERROR', message } },
+      { status: 500 },
     );
   }
 }

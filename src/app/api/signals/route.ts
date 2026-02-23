@@ -11,7 +11,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchAllAccountsBalance } from '@/lib/kis-client';
+import { fetchAllAccountsBalanceForUser } from '@/lib/kis-client';
 import { fetchDailyPrices, clearCache } from '@/lib/signal/dataSource';
 import { calcIndicators } from '@/lib/signal/indicators';
 import { calcAction } from '@/lib/signal/scoring';
@@ -24,7 +24,8 @@ interface SignalsCache {
   expiresAt: number;
 }
 
-let signalsCache: SignalsCache | null = null;
+// 사용자별 캐시 (userId → SignalsCache) — 데이터 격리 필수
+const signalsCacheByUser = new Map<string, SignalsCache>();
 const TTL_SIGNALS = 60 * 60 * 1000; // 1시간
 
 // ── 액션 정렬 우선순위 ────────────────────────────────────
@@ -40,26 +41,35 @@ const ACTION_ORDER: Record<ActionType, number> = {
 
 // ── GET 핸들러 ────────────────────────────────────────────
 export async function GET(request: NextRequest) {
+  const userId = request.headers.get('x-user-id');
+  if (!userId) {
+    return NextResponse.json(
+      { success: false, error: { code: 'UNAUTHORIZED' } },
+      { status: 401 },
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const forceRefresh = searchParams.get('refresh') === 'true';
 
-  // 강제 갱신 시 캐시 초기화
+  // 강제 갱신 시 해당 사용자 캐시만 초기화
   if (forceRefresh) {
-    signalsCache = null;
+    signalsCacheByUser.delete(userId);
     clearCache();
   }
 
-  // 캐시 유효성 확인
-  if (signalsCache && Date.now() < signalsCache.expiresAt) {
+  // 사용자별 캐시 유효성 확인
+  const cachedEntry = signalsCacheByUser.get(userId);
+  if (cachedEntry && Date.now() < cachedEntry.expiresAt) {
     return NextResponse.json({
-      ...signalsCache.data,
+      ...cachedEntry.data,
       cached: true,
     });
   }
 
   try {
-    // ── 1. 잔고 조회 ────────────────────────────────────
-    const balanceData = await fetchAllAccountsBalance();
+    // ── 1. 사용자별 잔고 조회 ──────────────────────────
+    const balanceData = await fetchAllAccountsBalanceForUser(userId);
     const allHoldings = balanceData.merged.holdings;
     const totalEvaluation = balanceData.merged.summary.totalEvaluation;
 
@@ -162,10 +172,10 @@ export async function GET(request: NextRequest) {
       cached:    false,
     };
 
-    signalsCache = {
+    signalsCacheByUser.set(userId, {
       data:      response,
       expiresAt: Date.now() + TTL_SIGNALS,
-    };
+    });
 
     return NextResponse.json(response);
 

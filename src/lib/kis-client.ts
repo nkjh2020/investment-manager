@@ -4,6 +4,7 @@ import type { BalanceData, AccountBalanceData, MultiAccountBalanceData } from '@
 import type { AccountConfig } from '@/types/account';
 import { getToken, clearToken } from './token-manager';
 import { getAccountConfigs } from './account-config';
+import { getUserById, decryptKisAccount } from './user-store';
 
 const KIS_API_BASE_URL = process.env.KIS_API_BASE_URL || 'https://openapi.koreainvestment.com:9443';
 
@@ -191,8 +192,52 @@ function mergeSummaries(summaries: AccountSummary[]): AccountSummary {
   return merged;
 }
 
+/**
+ * 사용자별 KIS 잔고 조회 (멀티 유저 — KV에서 사용자 계좌 로드)
+ */
+export async function fetchAllAccountsBalanceForUser(userId: string): Promise<MultiAccountBalanceData> {
+  const user = await getUserById(userId);
+  if (!user || user.kisAccounts.length === 0) {
+    return {
+      accounts: [],
+      merged: {
+        holdings: [],
+        summary: {
+          totalDeposit: 0, totalEvaluation: 0, totalPurchaseAmount: 0,
+          totalEvalProfit: 0, totalEvalProfitRate: 0,
+          d1Deposit: 0, d2Deposit: 0, todayBuyAmount: 0, todaySellAmount: 0,
+          accountId: 'all', accountLabel: '전체',
+        },
+      },
+    };
+  }
+
+  // 복호화된 계좌를 AccountConfig 형태로 변환
+  const accounts: AccountConfig[] = user.kisAccounts.map((a) => decryptKisAccount(a));
+  return fetchAllAccountsBalanceWithAccounts(accounts);
+}
+
+/**
+ * 특정 사용자의 특정 계좌 잔고 조회
+ */
+export async function fetchAllBalanceForUser(userId: string, accountId: string): Promise<BalanceData> {
+  const user = await getUserById(userId);
+  if (!user) throw new Error('User not found');
+
+  const encrypted = user.kisAccounts.find((a) => a.id === accountId);
+  if (!encrypted) throw new Error('Account not found');
+
+  const account: AccountConfig = decryptKisAccount(encrypted);
+  return fetchAllBalance(account);
+}
+
+/** @deprecated 단일 사용자 전용 — 멀티 유저에서는 fetchAllAccountsBalanceForUser 사용 */
 export async function fetchAllAccountsBalance(): Promise<MultiAccountBalanceData> {
   const accounts = getAccountConfigs();
+  return fetchAllAccountsBalanceWithAccounts(accounts);
+}
+
+async function fetchAllAccountsBalanceWithAccounts(accounts: AccountConfig[]): Promise<MultiAccountBalanceData> {
 
   const results = await Promise.allSettled(
     accounts.map((account) => fetchAllBalance(account))

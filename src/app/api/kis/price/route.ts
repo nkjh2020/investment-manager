@@ -1,22 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from '@/lib/token-manager';
-import { getAccountConfigs } from '@/lib/account-config';
+import { getUserById, decryptKisAccount } from '@/lib/user-store';
 
 const KIS_API_BASE_URL = process.env.KIS_API_BASE_URL || 'https://openapi.koreainvestment.com:9443';
 
 export async function GET(request: NextRequest) {
+  const userId = request.headers.get('x-user-id');
+  if (!userId) {
+    return NextResponse.json(
+      { success: false, error: { code: 'UNAUTHORIZED' } },
+      { status: 401 },
+    );
+  }
+
   try {
     const code = request.nextUrl.searchParams.get('code');
     if (!code) {
       return NextResponse.json(
         { success: false, error: { code: 'INVALID_INPUT', message: 'Stock code is required' } },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // 첫 번째 계좌의 토큰/키를 사용하여 시세 조회
-    const accounts = getAccountConfigs();
-    const account = accounts[0];
+    // 사용자의 첫 번째 계좌 사용
+    const user = await getUserById(userId);
+    if (!user || user.kisAccounts.length === 0) {
+      return NextResponse.json(
+        { success: false, error: { code: 'NO_ACCOUNTS', message: 'KIS 계좌를 먼저 등록해주세요' } },
+        { status: 400 },
+      );
+    }
+
+    const account = decryptKisAccount(user.kisAccounts[0]);
     const token = await getToken(account);
 
     const url = new URL(`${KIS_API_BASE_URL}/uapi/domestic-stock/v1/quotations/inquire-price`);
@@ -54,7 +69,7 @@ export async function GET(request: NextRequest) {
     const message = error instanceof Error ? error.message : 'Price inquiry failed';
     return NextResponse.json(
       { success: false, error: { code: 'KIS_API_ERROR', message } },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
