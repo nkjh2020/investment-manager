@@ -207,9 +207,9 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
           </div>
           <div className={`rounded-lg px-3 py-2 ${
             action === 'SELL' || action === 'TRIM'
-              ? 'bg-red-50 dark:bg-red-950'
+              ? 'bg-red-50 dark:bg-red-700/80'
               : action === 'BUY' || action === 'STRONG_BUY' || action === 'ADD'
-                ? 'bg-blue-50 dark:bg-blue-950'
+                ? 'bg-blue-50 dark:bg-blue-700/80'
                 : 'bg-gray-50 dark:bg-gray-900'
           }`}>
             <p className="text-[11px] text-gray-600 dark:text-gray-100">실행 제안</p>

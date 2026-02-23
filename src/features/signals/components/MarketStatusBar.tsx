@@ -49,7 +49,7 @@ function IndexChip({
 // ── Crash 전략 배너 ───────────────────────────────────────
 function CrashAlert({ strategy }: { strategy: CrashStrategy }) {
   return (
-    <div className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-800 dark:bg-red-900/20">
+    <div className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-700 dark:bg-red-700/80">
       <div className="mb-2 flex items-center gap-2">
         <span className="text-sm font-bold text-red-700 dark:text-red-400">
           🚨 급락 대응 전략 활성화
