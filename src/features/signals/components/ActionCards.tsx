@@ -15,31 +15,31 @@ const ACTION_STYLES: Record<ActionType, {
   emoji: string;
 }> = {
   SELL:       {
-    card:  'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20',
+    card:  'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-950',
     badge: 'bg-red-600 text-white',
     label: '매도',
     emoji: '🔴',
   },
   TRIM:       {
-    card:  'border-orange-300 bg-orange-50 dark:border-orange-700 dark:bg-orange-900/20',
+    card:  'border-orange-300 bg-orange-50 dark:border-orange-700 dark:bg-orange-950',
     badge: 'bg-orange-500 text-white',
     label: '비중축소',
     emoji: '🟠',
   },
   STRONG_BUY: {
-    card:  'border-blue-400 bg-blue-50 dark:border-blue-600 dark:bg-blue-900/20',
+    card:  'border-blue-400 bg-blue-50 dark:border-blue-600 dark:bg-blue-950',
     badge: 'bg-blue-700 text-white',
     label: '강력매수',
     emoji: '💙',
   },
   BUY:        {
-    card:  'border-blue-300 bg-blue-50 dark:border-blue-700 dark:bg-blue-900/20',
+    card:  'border-blue-300 bg-blue-50 dark:border-blue-700 dark:bg-blue-950',
     badge: 'bg-blue-500 text-white',
     label: '매수',
     emoji: '🔵',
   },
   ADD:        {
-    card:  'border-cyan-300 bg-cyan-50 dark:border-cyan-700 dark:bg-cyan-900/20',
+    card:  'border-cyan-300 bg-cyan-50 dark:border-cyan-700 dark:bg-cyan-950',
     badge: 'bg-cyan-600 text-white',
     label: '추가매수',
     emoji: '🩵',
