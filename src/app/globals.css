@@ -24,4 +24,13 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* iPhone 홈 바 safe-area 대응 */
+  .pb-safe {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
 }
