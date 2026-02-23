@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import QueryProvider from '@/providers/QueryProvider';
-import ThemeProvider from '@/providers/ThemeProvider';
 import { AuthProvider } from '@/providers/AuthProvider';
 import AppLayout from '@/components/layout/AppLayout';
 
@@ -50,15 +49,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" suppressHydrationWarning>
+    <html lang="ko" className="dark">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider>
-          <AuthProvider>
-            <QueryProvider>
-              <AppLayout>{children}</AppLayout>
-            </QueryProvider>
-          </AuthProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <QueryProvider>
+            <AppLayout>{children}</AppLayout>
+          </QueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );

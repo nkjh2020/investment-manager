@@ -45,13 +45,13 @@ const ACTION_STYLES: Record<ActionType, {
     emoji: '🩵',
   },
   HOLD:       {
-    card:  'border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700/30',
+    card:  'border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-900',
     badge: 'bg-gray-500 text-white',
     label: '보유',
     emoji: '⚪',
   },
   'N/A':      {
-    card:  'border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700/20',
+    card:  'border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-900',
     badge: 'bg-gray-400 text-white',
     label: 'N/A',
     emoji: '❓',
@@ -120,7 +120,7 @@ function SignalCard({
 export default function ActionCards({ signals, onSelectSignal }: ActionCardsProps) {
   if (signals.length === 0) {
     return (
-      <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 py-8 dark:border-gray-700 dark:bg-gray-800">
+      <div className="flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50 py-8 dark:border-gray-700 dark:bg-gray-900">
         <p className="text-sm text-gray-600 dark:text-gray-100">보유 종목이 없습니다</p>
       </div>
     );

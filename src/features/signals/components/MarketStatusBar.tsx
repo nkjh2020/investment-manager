@@ -32,7 +32,7 @@ function IndexChip({
         : 'text-red-600 dark:text-red-400';
 
   return (
-    <div className="flex flex-col items-center rounded-lg bg-gray-50 px-3 py-2 text-center dark:bg-gray-700/50">
+    <div className="flex flex-col items-center rounded-lg bg-gray-50 px-3 py-2 text-center dark:bg-gray-900">
       <span className="text-xs font-medium text-gray-600 dark:text-gray-100">{label}</span>
       <span className="text-sm font-semibold text-gray-900 dark:text-white">
         {current.toLocaleString()}
@@ -117,7 +117,7 @@ export default function MarketStatusBar({ marketStatus }: MarketStatusBarProps) 
           />
         )}
         {indicators.vix && (
-          <div className="flex flex-col items-center rounded-lg bg-gray-50 px-3 py-2 text-center dark:bg-gray-700/50">
+          <div className="flex flex-col items-center rounded-lg bg-gray-50 px-3 py-2 text-center dark:bg-gray-900">
             <span className="text-xs font-medium text-gray-600 dark:text-gray-100">VIX</span>
             <span className={`text-sm font-semibold ${
               indicators.vix.current > 30

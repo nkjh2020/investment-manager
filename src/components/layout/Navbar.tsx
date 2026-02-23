@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { clsx } from 'clsx';
-import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useAuth } from '@/providers/AuthProvider';
 
 const navItems = [
@@ -66,7 +65,6 @@ export default function Navbar() {
               {user.nickname}
             </span>
           )}
-          <ThemeToggle />
           <button
             onClick={handleLogout}
             className="rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"

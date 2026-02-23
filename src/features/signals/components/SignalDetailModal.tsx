@@ -81,7 +81,7 @@ function ScoreBar({
         <span>{label}</span>
         <span className="font-medium">{value >= 0 ? '+' : ''}{value}</span>
       </div>
-      <div className="h-2 w-full rounded-full bg-gray-100 dark:bg-gray-700">
+      <div className="h-2 w-full rounded-full bg-gray-100 dark:bg-gray-900">
         <div
           className={`h-2 rounded-full ${color} transition-all`}
           style={{ width: `${clampedPct}%` }}
@@ -138,13 +138,13 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
 
         {/* 현재 비중 / 수익률 */}
         <div className="mb-4 grid grid-cols-2 gap-3">
-          <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-700/50">
+          <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-900">
             <p className="text-xs text-gray-600 dark:text-gray-100">현재 비중</p>
             <p className="text-lg font-bold text-gray-900 dark:text-white">
               {currentWeight.toFixed(1)}%
             </p>
           </div>
-          <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-700/50">
+          <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-900">
             <p className="text-xs text-gray-600 dark:text-gray-100">수익률</p>
             <p className={`text-lg font-bold ${
               profitRate > 0
@@ -159,7 +159,7 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
         </div>
 
         {/* 점수 시각화 */}
-        <div className="mb-4 rounded-lg bg-gray-50 p-3 dark:bg-gray-700/30">
+        <div className="mb-4 rounded-lg bg-gray-50 p-3 dark:bg-gray-900">
           <p className="mb-2 text-xs font-semibold text-gray-700 dark:text-gray-100">점수 분석</p>
           <ScoreBar label="추세 (Trend)"    value={score.trend}    min={0}  max={4} />
           <ScoreBar label="모멘텀 (RSI)"     value={score.momentum} min={-2} max={2} />
@@ -181,7 +181,7 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
         </div>
 
         {/* 이평선 위치 */}
-        <div className="mb-4 rounded-lg bg-gray-50 p-3 dark:bg-gray-700/30">
+        <div className="mb-4 rounded-lg bg-gray-50 p-3 dark:bg-gray-900">
           <p className="mb-1 text-xs font-semibold text-gray-700 dark:text-gray-100">이동평균선</p>
           <div className="divide-y divide-gray-100 dark:divide-gray-700">
             <MAPositionRow label="MA 20"  price={ind.price} ma={ind.ma20} />
@@ -201,7 +201,7 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
 
         {/* 판단 근거 / 실행 제안 */}
         <div className="space-y-2">
-          <div className="rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-700/30">
+          <div className="rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-900">
             <p className="text-[11px] text-gray-600 dark:text-gray-100">판단 근거</p>
             <p className="text-xs font-medium text-gray-800 dark:text-gray-200">{reason}</p>
           </div>
@@ -210,7 +210,7 @@ export default function SignalDetailModal({ signal, onClose }: SignalDetailModal
               ? 'bg-red-50 dark:bg-red-900/20'
               : action === 'BUY' || action === 'STRONG_BUY' || action === 'ADD'
                 ? 'bg-blue-50 dark:bg-blue-900/20'
-                : 'bg-gray-50 dark:bg-gray-700/30'
+                : 'bg-gray-50 dark:bg-gray-900'
           }`}>
             <p className="text-[11px] text-gray-600 dark:text-gray-100">실행 제안</p>
             <p className="text-xs font-medium text-gray-800 dark:text-gray-200">{suggestion}</p>
