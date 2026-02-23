@@ -50,10 +50,12 @@ export default function ProfitLineChart({ holdings }: ProfitLineChartProps) {
           <Tooltip
             formatter={(value) => [`${formatCurrency(Number(value))}원`, '손익']}
             contentStyle={{
-              backgroundColor: '#fff',
-              border: '1px solid #e5e7eb',
+              backgroundColor: '#1f2937',
+              border: '1px solid #374151',
               borderRadius: '8px',
             }}
+            labelStyle={{ color: '#f9fafb', fontWeight: 600 }}
+            itemStyle={{ color: '#d1d5db' }}
           />
           <Bar dataKey="profit" radius={[4, 4, 0, 0]}>
             {data.map((entry, index) => (
